@@ -83,3 +83,17 @@ header {
   padding: 0.7rem 1rem;
   cursor: pointer;
 }
+
+.task-form select {
+  width: 100%;
+  padding: 0.7rem;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  background-color: white;
+}
+
+.task-card button {
+  margin-top: 1rem;
+  padding: 0.5rem 0.8rem;
+  cursor: pointer;
+}
