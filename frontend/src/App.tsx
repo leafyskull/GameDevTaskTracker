@@ -44,6 +44,10 @@ function App() {
     setTasks((currentTasks) => [...currentTasks, newTask]);
   }
 
+  function deleteTask(taskId: number) {
+    setTasks((currentTasks) => currentTasks.filter((task) => task.id !== taskId));
+  }
+
   return (
     <main>
 
@@ -56,7 +60,10 @@ function App() {
 
       <section className = "task-list">
         {tasks.map((task) => (
-          <TaskCard key={task.id} task={task} />
+          <TaskCard
+          key={task.id}
+          task={task}
+          onDeleteTask={deleteTask} />
         ))}
       </section>
 

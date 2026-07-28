@@ -3,9 +3,10 @@ import type { Task } from '../types/Task';
 
 type TaskCardProps = {
     task: Task;
+    onDeleteTask: (taskId: number) => void;
 };
 
-function TaskCard({ task }: TaskCardProps){
+function TaskCard({ task, onDeleteTask }: TaskCardProps){
     return (
         <article>
             <h2>{task.title}</h2>
@@ -17,6 +18,13 @@ function TaskCard({ task }: TaskCardProps){
                 <span>Priority: {task.priority}</span>
                 <span>Status: {task.status}</span>
             </div>
+
+            <button
+                type = "button"
+                onClick = {() => onDeleteTask(task.id)}
+            >
+                Delete Task
+            </button>
             
         </article>
     );
