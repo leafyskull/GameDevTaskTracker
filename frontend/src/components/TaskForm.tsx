@@ -1,8 +1,8 @@
 import { useState } from "react";
-import type { Task } from "../types/Task";
+import type { Task, NewTask } from "../types/Task";
 
 type TaskFormProps = {
-    onAddTask: (task: Task) => void;
+    onAddTask: (task: NewTask) => Promise<boolean>;
 };
 
 function TaskForm({ onAddTask }: TaskFormProps) {
@@ -13,15 +13,14 @@ function TaskForm({ onAddTask }: TaskFormProps) {
     const [status, setStatus] = useState<Task["status"]>("Planned");
 
 
-    function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
         if (title.trim() === "") {
             return;
         }
 
-        const newTask: Task = {
-            id: Date.now(),
+        const newTask: NewTask = {
             title: title.trim(),
             description: description.trim(),
             type,
@@ -29,7 +28,9 @@ function TaskForm({ onAddTask }: TaskFormProps) {
             status,
         };
 
-        onAddTask(newTask);
+        const wasAdded = await onAddTask(newTask);
+
+        if (!wasAdded) return;
 
         setTitle("");
         setDescription("");

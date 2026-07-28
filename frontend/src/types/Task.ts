@@ -9,3 +9,5 @@ export type Task = {
     priority: "Low" | "Medium" | "High";
     status: "Planned" | "In Progress" | "Complete";
 };
+
+export type NewTask = Omit<Task, "id">;

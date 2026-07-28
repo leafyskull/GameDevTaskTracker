@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import TaskCard from './components/TaskCard';
 import TaskForm from './components/TaskForm';
-import type {Task} from './types/Task';
+import type { Task, NewTask } from './types/Task';
 
 
 
@@ -46,8 +46,40 @@ function App() {
     loadTasks();
   }, []);
 
-  function addTask(newTask: Task) {
-    setTasks((currentTasks) => [...currentTasks, newTask]);
+  async function addTask(newTask: NewTask): Promise<boolean> {
+    try {
+      setError(null);
+
+      const response = await fetch("http://127.0.0.1:8000/tasks", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newTask),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to add task with status ${response.status}`);
+      }
+
+      const createdTask: Task = await response.json();
+
+      setTasks((currentTasks) => [...currentTasks, createdTask]);
+      return true;
+    }
+    catch (error)
+    {
+      console.error("Failed to add task:", error);
+
+      if (error instanceof Error) {
+        setError(`Could not add task: ${error.message}.`);
+      } else {
+        setError("Could not add task to server.");
+      }
+
+      return false;
+    }
+  
   }
 
   function deleteTask(taskId: number) {

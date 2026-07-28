@@ -19,6 +19,16 @@ app.add_middleware(
 
 
 
+class TaskCreate(BaseModel):
+    title: str
+    description: str
+    type: Literal["Feature", "Bug", "Improvement", "Other"]
+    priority: Literal["Low", "Medium", "High"]
+    status: Literal["Planned", "In Progress", "Complete"]
+
+
+
+
 class Task(BaseModel):
     id: int
     title: str
@@ -62,3 +72,20 @@ def read_root():
 @app.get("/tasks")
 def get_tasks() -> list[Task]:
     return tasks
+
+@app.post("/tasks", status_code = 201)
+def create_task(task_data: TaskCreate) -> Task:
+    next_id = max(task.id for task in tasks) + 1 if tasks else 1
+
+    new_task = Task(
+        id = next_id,
+        title = task_data.title,
+        description = task_data.description,
+        type = task_data.type,
+        priority = task_data.priority,
+        status = task_data.status,
+    )
+
+    tasks.append(new_task)
+
+    return new_task
