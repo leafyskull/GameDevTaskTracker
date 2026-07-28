@@ -1,3 +1,7 @@
+// viteConfig.ts
+// 7/27/2026
+// This file contains the Vite configuration for the frontend of the Game Dev Tracker project.
+
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 

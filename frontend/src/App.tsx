@@ -1,3 +1,7 @@
+// App.tsx
+// 7/27/2026
+// This file contains the main application component for the Game Dev Tracker project.
+
 import { useEffect, useState } from 'react';
 import './App.css';
 import TaskCard from './components/TaskCard';
@@ -8,6 +12,9 @@ import type { Task, NewTask } from './types/Task';
 
 function App() {
 
+  // tasks - holds the list of tasks fetched from the backend.
+  // isLoading - indicates whether the tasks are currently being loaded.
+  // error - holds any error message that occurs during fetching or adding tasks.
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);

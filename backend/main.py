@@ -1,11 +1,16 @@
-from typing import Literal
+# Main.py
+# 7/27/2026
+# This file contains the backend code for the Game Development Tracker application.
 
+from typing import Literal
 from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 
+# Start FastAPI application.
 app = FastAPI()
 
+# Add CORS middleware to allow requests from the frontend.
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -19,6 +24,7 @@ app.add_middleware(
 
 
 
+# TaskCreate: Handles the creation of tasks, from user input.
 class TaskCreate(BaseModel):
     title: str
     description: str
@@ -26,9 +32,7 @@ class TaskCreate(BaseModel):
     priority: Literal["Low", "Medium", "High"]
     status: Literal["Planned", "In Progress", "Complete"]
 
-
-
-
+# Task: Represents a task in the system.
 class Task(BaseModel):
     id: int
     title: str
@@ -37,6 +41,9 @@ class Task(BaseModel):
     priority: Literal["Low", "Medium", "High"]
     status: Literal["Planned", "In Progress", "Complete"]
 
+
+
+# Placeholder for tasks, to be replaced with a database.
 tasks: list[Task] = [
     Task(
         id = 1,
@@ -65,14 +72,20 @@ tasks: list[Task] = [
 ]
 
 
+
+### *** API Endpoints *** ###
+
+# app.get("/") - Root endpoint, returns a welcome message.
 @app.get("/")
 def read_root():
     return {"message": "Game Development Tracker API"}
 
+# app.get("/tasks") - Returns a list of all tasks.
 @app.get("/tasks")
 def get_tasks() -> list[Task]:
     return tasks
 
+# app.post("/tasks") - Creates a new task and returns it.
 @app.post("/tasks", status_code = 201)
 def create_task(task_data: TaskCreate) -> Task:
     next_id = max(task.id for task in tasks) + 1 if tasks else 1
