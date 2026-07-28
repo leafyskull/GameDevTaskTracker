@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import TaskCard from './components/TaskCard';
 import TaskForm from './components/TaskForm';
@@ -6,39 +6,45 @@ import type {Task} from './types/Task';
 
 
 
-const startingTasks: Task[] = [
-  {
-    id: 1,
-    title: "Add barbarian turns",
-    description: "Create basic enemy movement",
-    type: "Feature",
-    priority: "Medium",
-    status: "Planned"
-  },
-  {
-    id: 2,
-    title: "Add villages",
-    description: "Village tiles spawn on map creation, which the player must protect.",
-    type: "Feature",
-    priority: "Medium",
-    status: "Planned"
-  },
-  {
-    id: 3,
-    title: "Add barbarian camp",
-    description: "Barbarian camp tiles spawn on map creation, and can spawn barbarian units.",
-    type: "Feature",
-    priority: "Medium",
-    status: "Planned"
-  }
-]
-
-
-
-
 function App() {
 
-  const [tasks, setTasks] = useState<Task[]>(startingTasks);
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function loadTasks() {
+      try {
+        setIsLoading(true);
+        setError(null);
+
+        const response = await fetch("http://127.0.0.1:8000/tasks");
+        console.log("Response:", response);
+        console.log("Status:", response.status);
+        console.log("Content type:", response.headers.get("content-type"));
+
+        if (!response.ok) {
+          throw new Error(`Failed to fetch tasks with status ${response.status}`);
+        }
+
+        const taskData: Task[] = await response.json();
+        setTasks(taskData);
+      } catch (error) {
+        console.error("Failed to load tasks:", error);
+
+        if (error instanceof Error) {
+          setError(`Could not load tasks: ${error.message}.`);
+        } else {
+          setError("Could not load tasks from server.");
+        
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    loadTasks();
+  }, []);
 
   function addTask(newTask: Task) {
     setTasks((currentTasks) => [...currentTasks, newTask]);
@@ -58,14 +64,21 @@ function App() {
 
       <TaskForm onAddTask={addTask} />
 
-      <section className = "task-list">
-        {tasks.map((task) => (
-          <TaskCard
-          key={task.id}
-          task={task}
-          onDeleteTask={deleteTask} />
-        ))}
-      </section>
+      {isLoading && <p>Loading tasks...</p>}
+
+      {error && <p className = "error">{error}</p>}
+
+      {!isLoading && !error && (
+        <section className = "task-list">
+          {tasks.map((task) => (
+            <TaskCard
+              key={task.id}
+              task={task}
+              onDeleteTask={deleteTask}
+            />
+          ))}
+        </section>
+      )}
 
     </main>
   );

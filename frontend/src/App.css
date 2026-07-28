@@ -97,3 +97,11 @@ header {
   padding: 0.5rem 0.8rem;
   cursor: pointer;
 }
+
+.error-message {
+  padding: 1rem;
+  color: #8a1c1c;
+  background-color: #ffe5e5;
+  border: 1px solid #e5aaaa;
+  border-radius: 4px;
+}
