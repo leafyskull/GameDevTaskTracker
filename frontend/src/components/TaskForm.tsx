@@ -8,6 +8,10 @@ type TaskFormProps = {
 function TaskForm({ onAddTask }: TaskFormProps) {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
+    const [type, setType] = useState<Task["type"]>("Feature");
+    const [priority, setPriority] = useState<Task["priority"]>("Medium");
+    const [status, setStatus] = useState<Task["status"]>("Planned");
+
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -20,15 +24,18 @@ function TaskForm({ onAddTask }: TaskFormProps) {
             id: Date.now(),
             title: title.trim(),
             description: description.trim(),
-            type: "Feature",
-            priority: "Medium",
-            status: "Planned",
+            type,
+            priority,
+            status,
         };
 
         onAddTask(newTask);
 
         setTitle("");
         setDescription("");
+        setType("Feature");
+        setPriority("Medium");
+        setStatus("Planned");
     }
 
     return (
@@ -51,6 +58,42 @@ function TaskForm({ onAddTask }: TaskFormProps) {
                     value = {description}
                     onChange = {(event) => setDescription(event.target.value)}
                 />
+            </label>
+
+            <label>
+                Type
+                <select
+                    value = {type}
+                    onChange = {(event) => setType(event.target.value as Task["type"])}
+                >
+                    <option value = "Feature">Feature</option>
+                    <option value = "Bug">Bug</option>
+                    <option value = "Improvement">Improvement</option>
+                </select>
+            </label>
+
+            <label>
+                Priority
+                <select
+                    value = {priority}
+                    onChange = {(event) => setPriority(event.target.value as Task["priority"])}
+                >
+                    <option value = "Low">Low</option>
+                    <option value = "Medium">Medium</option>
+                    <option value = "High">High</option>   
+                </select>
+            </label>
+
+            <label>
+                Status
+                <select
+                    value = {status}
+                    onChange = {(event => setStatus(event?.target.value as Task["status"]))}
+                >
+                    <option value = "Planned">Planned</option>
+                    <option value = "In Progress">In Progress</option>
+                    <option value = "Complete">Complete</option>
+                </select>
             </label>
 
             <button type = "submit">Add Task</button>
