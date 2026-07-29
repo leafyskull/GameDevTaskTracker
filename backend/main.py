@@ -3,7 +3,7 @@
 # This file contains the backend code for the Game Development Tracker application.
 
 from typing import Literal
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -102,3 +102,12 @@ def create_task(task_data: TaskCreate) -> Task:
     tasks.append(new_task)
 
     return new_task
+
+# app.delete("/tasks/{task_id}") - Deletes a task by its ID.
+@app.delete("/tasks/{task_id}")
+def delete_task(task_id: int):
+    for i in range(len(tasks)):
+        if tasks[i].id == task_id:
+            del tasks[i]
+            return {"message": f"Task with ID {task_id} deleted successfully."}
+    raise HTTPException(status_code=404, detail=f"Task with ID {task_id} not found.")

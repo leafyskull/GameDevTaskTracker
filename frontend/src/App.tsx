@@ -19,6 +19,8 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+
+
   useEffect(() => {
     async function loadTasks() {
       try {
@@ -53,10 +55,13 @@ function App() {
     loadTasks();
   }, []);
 
+
+
   async function addTask(newTask: NewTask): Promise<boolean> {
     try {
       setError(null);
 
+      // Await a response from the backend, add a new task.
       const response = await fetch("http://127.0.0.1:8000/tasks", {
         method: "POST",
         headers: {
@@ -69,8 +74,10 @@ function App() {
         throw new Error(`Failed to add task with status ${response.status}`);
       }
 
+      // Get reference to the newly created task from the backend response.
       const createdTask: Task = await response.json();
 
+      // Update the tasks state with the newly created task.
       setTasks((currentTasks) => [...currentTasks, createdTask]);
       return true;
     }
@@ -89,8 +96,31 @@ function App() {
   
   }
 
-  function deleteTask(taskId: number) {
-    setTasks((currentTasks) => currentTasks.filter((task) => task.id !== taskId));
+
+
+  async function deleteTask(taskId: number) {
+    
+    try {
+      setError(null);
+
+      const response = await fetch(`http://127.0.0.1:8000/tasks/${taskId}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to delete task with status ${response.status}`);
+      }
+
+      setTasks((currentTasks) => currentTasks.filter((task) => task.id !== taskId));
+    } catch (error) {
+      console.error("Failed to delete task:", error);
+
+      if (error instanceof Error) {
+        setError(`Could not delete task: ${error.message}.`);
+      } else {
+        setError("Could not delete task from server.");
+      }
+    }
   }
 
   return (

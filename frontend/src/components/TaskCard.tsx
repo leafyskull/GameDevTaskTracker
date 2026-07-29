@@ -3,7 +3,7 @@ import type { Task } from '../types/Task';
 
 type TaskCardProps = {
     task: Task;
-    onDeleteTask: (taskId: number) => void;
+    onDeleteTask: (taskId: number) => Promise<void>;
 };
 
 function TaskCard({ task, onDeleteTask }: TaskCardProps){
