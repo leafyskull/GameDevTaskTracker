@@ -1,10 +1,17 @@
+// TaskForm.tsx
+// 7/30/2026
+// This file contains the TaskForm component for the Game Dev Tracker project.
+// The TaskForm allows users to input details for a new task and submit it to the backend.
+
 import { useState } from "react";
 import type { Task, NewTask } from "../types/Task";
 
+// TaskFormProps: Defines the properties of a task.
 type TaskFormProps = {
     onAddTask: (task: NewTask) => Promise<boolean>;
 };
 
+// TaskForm: A form component that allows users to add a new task.
 function TaskForm({ onAddTask }: TaskFormProps) {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
