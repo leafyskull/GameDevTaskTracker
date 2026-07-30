@@ -5,6 +5,7 @@
 // for functionality.
 
 import type { Task } from '../types/Task';
+import { useState} from 'react';
 
 // TaskCardProps - defines the properties that the TaskCard component expects to receive.
 type TaskCardProps = {
@@ -16,23 +17,44 @@ type TaskCardProps = {
 // task: Task object
 // onDeleteTask: Function to handle task deletion
 function TaskCard({ task, onDeleteTask }: TaskCardProps){
+    
+    // This makes the delete button disable and change text while
+    // a task is being deleted, to prevent the user from clicking
+    // delete several times.
+    const [isDeleting, setIsDeleting] = useState(false);
+
+    async function handleDelete(){
+        setIsDeleting(true);
+
+        try { 
+            await onDeleteTask(task.id);
+        } finally {
+            setIsDeleting(false);
+        }
+    }
+
+    // *** TASK CARD VISUAL *** //
     return (
         <article>
-            <h2>{task.title}</h2>
 
+            {/* Task info */}
+            <h2>{task.title}</h2>
             <p>{task.description}</p>
 
+            {/* Task Details */}
             <div className = "task-details">
                 <span>Type: {task.type}</span>
                 <span>Priority: {task.priority}</span>
                 <span>Status: {task.status}</span>
             </div>
-
+    
+            {/* Delete button */}
             <button
                 type = "button"
-                onClick = {() => onDeleteTask(task.id)}
+                onClick = {handleDelete}
+                disabled = {isDeleting}
             >
-                Delete Task
+                {isDeleting ? "Deleting..." : "Delete"}
             </button>
             
         </article>
