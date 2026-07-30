@@ -10,6 +10,7 @@ import type { Task, NewTask } from './types/Task';
 
 
 
+// App: Main app logic
 function App() {
 
   // tasks - holds the list of tasks fetched from the backend.
@@ -27,6 +28,7 @@ function App() {
         setIsLoading(true);
         setError(null);
 
+        // Try and connect to back end (locally hosted for now).
         const response = await fetch("http://127.0.0.1:8000/tasks");
         console.log("Response:", response);
         console.log("Status:", response.status);
@@ -36,13 +38,16 @@ function App() {
           throw new Error(`Failed to fetch tasks with status ${response.status}`);
         }
 
+        // Get task data from response.
         const taskData: Task[] = await response.json();
         setTasks(taskData);
+
       } catch (error) {
         console.error("Failed to load tasks:", error);
 
         if (error instanceof Error) {
           setError(`Could not load tasks: ${error.message}.`);
+
         } else {
           setError("Could not load tasks from server.");
         
@@ -57,6 +62,9 @@ function App() {
 
 
 
+  // AddTask: Adds a task to the list.
+  // newTask: The task to be added.
+  // Returns true if task addition was successful, false if not.
   async function addTask(newTask: NewTask): Promise<boolean> {
     try {
       setError(null);
@@ -98,11 +106,14 @@ function App() {
 
 
 
+  // deleteTask: Deletes a task from the list.
+  // taskId: The id of the task to be deleted.
   async function deleteTask(taskId: number) {
     
     try {
       setError(null);
 
+      // Try to delete the task
       const response = await fetch(`http://127.0.0.1:8000/tasks/${taskId}`, {
         method: "DELETE",
       });
@@ -111,18 +122,22 @@ function App() {
         throw new Error(`Failed to delete task with status ${response.status}`);
       }
 
+      // Update tasks list to remove deleted task
       setTasks((currentTasks) => currentTasks.filter((task) => task.id !== taskId));
+
     } catch (error) {
       console.error("Failed to delete task:", error);
 
       if (error instanceof Error) {
         setError(`Could not delete task: ${error.message}.`);
+
       } else {
         setError("Could not delete task from server.");
       }
     }
   }
 
+  // HTML page data
   return (
     <main>
 
