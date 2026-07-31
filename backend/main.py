@@ -69,6 +69,14 @@ tasks: list[Task] = [
         priority = "Medium",
         status = "Planned",
     ),
+    Task(
+        id = 4,
+        title = "Kaden Magic Axe",
+        description = "Add Kaden Magic Axe weapon upgrade",
+        type = "Feature",
+        priority = "Low",
+        status = "Planned",
+    ),
 ]
 
 

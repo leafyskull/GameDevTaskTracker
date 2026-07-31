@@ -13,13 +13,14 @@ type TaskFormProps = {
 
 // TaskForm: A form component that allows users to add a new task.
 function TaskForm({ onAddTask }: TaskFormProps) {
+
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [type, setType] = useState<Task["type"]>("Feature");
     const [priority, setPriority] = useState<Task["priority"]>("Medium");
     const [status, setStatus] = useState<Task["status"]>("Planned");
 
-
+    // handleSubmit: Handles the submitting of the task form.
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
@@ -27,6 +28,7 @@ function TaskForm({ onAddTask }: TaskFormProps) {
             return;
         }
 
+        // Create a new task given task data from HTML form.
         const newTask: NewTask = {
             title: title.trim(),
             description: description.trim(),
@@ -35,10 +37,12 @@ function TaskForm({ onAddTask }: TaskFormProps) {
             status,
         };
 
+        // Wait to add new task before clearing form.
         const wasAdded = await onAddTask(newTask);
 
         if (!wasAdded) return;
 
+        // Clear the form after adding new task.
         setTitle("");
         setDescription("");
         setType("Feature");
