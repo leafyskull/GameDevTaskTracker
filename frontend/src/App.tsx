@@ -104,8 +104,6 @@ function App() {
   
   }
 
-
-
   // deleteTask: Deletes a task from the list.
   // taskId: The id of the task to be deleted.
   async function deleteTask(taskId: number) {
@@ -137,6 +135,45 @@ function App() {
     }
   }
 
+  // updateTask: Updates a task in the list.
+  // updatedTask: The task with updated information.
+  async function updateTask(updatedTask: Task) {
+    try {
+      setError(null);
+
+      // Try to update the task
+      const response = await fetch(`http://127.0.0.1:8000/tasks/${updatedTask.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedTask),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to update task with status ${response.status}`);
+      }
+
+      // Update tasks list to reflect the updated task
+      setTasks((currentTasks) =>
+        currentTasks.map((task) =>
+          task.id === updatedTask.id ? updatedTask : task
+        )
+      );
+
+
+    } catch (error) {
+      console.error("Failed to update task:", error);
+
+      if (error instanceof Error) {
+        setError(`Could not update task: ${error.message}.`);
+      } else {
+        setError("Could not update task on server.");
+      }
+    }
+
+  }
+
   // HTML page data
   return (
     <main>
@@ -159,6 +196,7 @@ function App() {
               key={task.id}
               task={task}
               onDeleteTask={deleteTask}
+              onUpdateTask={updateTask}
             />
           ))}
         </section>
