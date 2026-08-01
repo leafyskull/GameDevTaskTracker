@@ -137,7 +137,9 @@ function App() {
 
   // updateTask: Updates a task in the list.
   // updatedTask: The task with updated information.
-  async function updateTask(updatedTask: Task) {
+  //
+  // Returns true if the task was successfully updated, false if else.
+  async function updateTask(updatedTask: Task): Promise<boolean> {
     try {
       setError(null);
 
@@ -161,8 +163,11 @@ function App() {
         )
       );
 
-
-    } catch (error) {
+      // Successful task update
+      return true;
+    }
+    catch (error)
+    {
       console.error("Failed to update task:", error);
 
       if (error instanceof Error) {
@@ -170,11 +175,16 @@ function App() {
       } else {
         setError("Could not update task on server.");
       }
+
+      // Failed to update task
+      return false;
     }
 
   }
 
-  // HTML page data
+
+
+  // *** HTML page data *** //
   return (
     <main>
 

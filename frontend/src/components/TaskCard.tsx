@@ -111,7 +111,7 @@ function TaskCard({ task, onDeleteTask, onUpdateTask }: TaskCardProps){
         return (
 
             <article className = "task-card">
-                <form className = "task-form" onSubmit = {handleSave}>
+                <form className = "edit-task-form" onSubmit = {handleSave}>
                     
                     <h2>Edit Task</h2>
 
@@ -154,6 +154,23 @@ function TaskCard({ task, onDeleteTask, onUpdateTask }: TaskCardProps){
                         </select>
                     </label>
 
+                    {/* Cancel button */}
+                    <button
+                        type = "button"
+                        onClick = {handleCancelEdit}
+                    >
+                        Cancel
+                    </button>
+
+                    {/* Save button - submit the form so onSubmit (handleSave) is called */}
+                    <button
+                        type = "submit"
+                        disabled = {isSaving}
+                    >
+                        {isSaving ? "Saving..." : "Save"}
+                    </button>
+                    
+
                 </form>
             </article>
         
@@ -185,6 +202,7 @@ function TaskCard({ task, onDeleteTask, onUpdateTask }: TaskCardProps){
                     {isDeleting ? "Deleting..." : "Delete"}
                 </button>
 
+                {/* Edit button */}
                 <button
                     type = "button"
                     onClick = {isEditing ? handleCancelEdit : handleEdit}

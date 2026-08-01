@@ -105,3 +105,34 @@ header {
   border: 1px solid #e5aaaa;
   border-radius: 4px;
 }
+
+.edit-task-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.edit-task-form label {
+  display: grid;
+  gap: 0.4rem;
+  font-weight: bold;
+}
+
+.edit-task-form input,
+.edit-task-form textarea,
+.edit-task-form select {
+  width: 100%;
+  padding: 0.7rem;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+}
+
+.edit-task-form textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.task-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
