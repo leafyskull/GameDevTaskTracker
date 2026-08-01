@@ -33,6 +33,12 @@ function TaskCard({ task, onDeleteTask }: TaskCardProps){
         }
     }
 
+    // Placeholder for edit functionality
+    async function handleEdit(){
+        // Placeholder for edit functionality
+        console.log(`Edit task with ID: ${task.id}`);
+    }
+
     // *** TASK CARD VISUAL *** //
     return (
         <article>
@@ -56,7 +62,13 @@ function TaskCard({ task, onDeleteTask }: TaskCardProps){
             >
                 {isDeleting ? "Deleting..." : "Delete"}
             </button>
-            
+
+            <button
+                type = "button"
+                onClick = {handleEdit}
+            >
+                Edit
+            </button>
         </article>
     );
 }

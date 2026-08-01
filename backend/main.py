@@ -119,3 +119,19 @@ def delete_task(task_id: int):
             del tasks[i]
             return {"message": f"Task with ID {task_id} deleted successfully."}
     raise HTTPException(status_code=404, detail=f"Task with ID {task_id} not found.")
+
+# app.put("/tasks/{task_id}") - Updates a task by its ID.
+@app.put("/tasks/{task_id}")
+def update_task(task_id: int, task_data: TaskCreate) -> Task:
+    for i in range(len(tasks)):
+        if tasks[i].id == task_id:
+
+            tasks[i].title = task_data.title
+            tasks[i].description = task_data.description
+            tasks[i].type = task_data.type
+            tasks[i].priority = task_data.priority
+            tasks[i].status = task_data.status
+
+            return tasks[i]
+        
+    raise HTTPException(status_code=404, detail=f"Task with ID {task_id} not found.")

@@ -22,6 +22,7 @@ function TaskForm({ onAddTask }: TaskFormProps) {
 
     // handleSubmit: Handles the submitting of the task form.
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        
         event.preventDefault();
 
         if (title.trim() === "") {

@@ -7,3 +7,12 @@ Technologies used:
 - Python
 - FastAPI
 - Typescript
+
+
+Current functionalities:
+- List tasks
+- Add a new task
+- Delete a task
+
+TODO:
+- Update a task's info
