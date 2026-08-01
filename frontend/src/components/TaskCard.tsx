@@ -44,6 +44,8 @@ function TaskCard({ task, onDeleteTask, onUpdateTask }: TaskCardProps){
 
 
 
+    // handleDelete: Handles the deletion of a task.
+    // This happens when the user clicks the "Delete" button on a task card.
     async function handleDelete(){
         setIsDeleting(true);
 
@@ -97,16 +99,18 @@ function TaskCard({ task, onDeleteTask, onUpdateTask }: TaskCardProps){
         setIsEditing(false);
     }
 
-    // Placeholder for edit functionality
+    // handleEdit: Handles toggling the edit mode for the task.
+    // This happens when the user clicks the "Edit" button.
     async function handleEdit(){
-        
-        // For now, just toggle if user is editing or not.
+        // Toggle the edit mode - this will change the display from task details to the edit form.
         setIsEditing(!isEditing);
     }
 
-    // *** TASK CARD VISUAL *** //
 
+
+    // *** TASK CARD VISUAL *** //
     // If the user is editing, show the edit form. Otherwise, show the task details.
+
     if (isEditing) {
         return (
 
@@ -169,7 +173,6 @@ function TaskCard({ task, onDeleteTask, onUpdateTask }: TaskCardProps){
                     >
                         {isSaving ? "Saving..." : "Save"}
                     </button>
-                    
 
                 </form>
             </article>
