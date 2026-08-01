@@ -22,7 +22,7 @@ function TaskForm({ onAddTask }: TaskFormProps) {
 
     // handleSubmit: Handles the submitting of the task form.
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-        
+
         event.preventDefault();
 
         if (title.trim() === "") {
@@ -82,6 +82,7 @@ function TaskForm({ onAddTask }: TaskFormProps) {
                     <option value = "Feature">Feature</option>
                     <option value = "Bug">Bug</option>
                     <option value = "Improvement">Improvement</option>
+                    <option value = "Other">Other</option>
                 </select>
             </label>
 
