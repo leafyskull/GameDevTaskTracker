@@ -105,44 +105,95 @@ function TaskCard({ task, onDeleteTask, onUpdateTask }: TaskCardProps){
     }
 
     // *** TASK CARD VISUAL *** //
-    return (
-        <article>
 
-            {/* Task info */}
-            { isEditing ?
-            <input type = "text" value = {title} onChange = {(e) => setTitle(e.target.value)} />: 
-            <h2>{task.title}</h2>
-            }
+    // If the user is editing, show the edit form. Otherwise, show the task details.
+    if (isEditing) {
+        return (
 
-            {isEditing ? 
-            <input type = "text" value = {description} onChange = {(e) => setDescription(e.target.value)} /> :
-            <p>{task.description}</p>
-            }
+            <article className = "task-card">
+                <form className = "task-form" onSubmit = {handleSave}>
+                    
+                    <h2>Edit Task</h2>
 
-            {/* Task Details */}
-            <div className = "task-details">
-                <span>Type: {task.type}</span>
-                <span>Priority: {task.priority}</span>
-                <span>Status: {task.status}</span>
-            </div>
-    
-            {/* Delete button */}
-            <button
-                type = "button"
-                onClick = {handleDelete}
-                disabled = {isDeleting}
-            >
-                {isDeleting ? "Deleting..." : "Delete"}
-            </button>
+                    <label>
+                        Title <input type = "text" value = {title} onChange = {(event) => setTitle(event.target.value)} />
+                    </label>
 
-            <button
-                type = "button"
-                onClick = {isEditing ? handleCancelEdit : handleEdit}
-            >
-                {isEditing ? "Cancel" : "Edit"}
-            </button>
-        </article>
-    );
+                    <label>
+                        Description <input type = "text" value = {description} onChange = {(event) => setDescription(event.target.value)} />
+                    </label>
+
+                    {/* Type */}
+                    <label>
+                        Type
+                        <select value = {type} onChange = {(event) => setType(event.target.value as Task["type"])}>
+                            <option value = "Feature">Feature</option>
+                            <option value = "Bug">Bug</option>
+                            <option value = "Improvement">Improvement</option>
+                            <option value = "Other">Other</option>
+                        </select>
+                    </label>
+
+                    {/* Priority */}
+                    <label>
+                        Priority
+                        <select value = {priority} onChange = {(event) => setPriority(event.target.value as Task["priority"])}>
+                            <option value = "Low">Low</option>
+                            <option value = "Medium">Medium</option>
+                            <option value = "High">High</option>
+                        </select>
+                    </label>
+
+                    {/* Status */}
+                    <label>
+                        Status
+                        <select value = {status} onChange = {(event => setStatus(event.target.value as Task["status"]))}>
+                            <option value = "Planned">Planned</option>
+                            <option value = "In Progress">In Progress</option>
+                            <option value = "Complete">Complete</option>
+                        </select>
+                    </label>
+
+                </form>
+            </article>
+        
+        )
+    }
+
+
+    if (!isEditing) {
+        return (
+            <article className = "task-card">
+
+                {/* Task info */}
+                <h2>{task.title}</h2>
+                <p>{task.description}</p>
+
+                {/* Task Details */}
+                <div className = "task-details">
+                    <span>Type: {task.type}</span>
+                    <span>Priority: {task.priority}</span>
+                    <span>Status: {task.status}</span>
+                </div>
+        
+                {/* Delete button */}
+                <button
+                    type = "button"
+                    onClick = {handleDelete}
+                    disabled = {isDeleting}
+                >
+                    {isDeleting ? "Deleting..." : "Delete"}
+                </button>
+
+                <button
+                    type = "button"
+                    onClick = {isEditing ? handleCancelEdit : handleEdit}
+                >
+                    {isEditing ? "Cancel" : "Edit"}
+                </button>
+            </article>
+        );
+    }
 }
 
 export default TaskCard;
